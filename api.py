@@ -21,7 +21,7 @@ def index():
 
 
 # route mapping for HTTP GET on /api/schedule/TOR
-@app.route('/api/schedule/<string:team_id>', methods=['GET'])
+@app.route('/api/teams/<string:team_id>', methods=['GET'])
 def get_task(team_id):
     # fetch sub dataframe for all teams (hopefully 1) where abbreviation=team_id
     teams = team_data[team_data["abbreviation"] == team_id]
