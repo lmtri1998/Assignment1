@@ -44,6 +44,65 @@ print("successfully loaded teams data")
 def index():
     return "NHL API"
 
+# Game Result Details
+@app.route('/api/results/<int:game_id>/teams', methods=['GET'])
+def get_result_details(game_id):
+    # fetch sub dataframe for two teams in the game
+    teams = game_teams_stat[game_teams_stat["game_id"] == "game_id"]
+    # return 404 if there isn't one team ß
+    if teams.shape[0] < 1:
+        abort(404)
+    
+    # get the two team 
+    team1 = teams.iloc[0]
+    team2 = teams.iloc[1]
+
+    team_info1 = team_data[team_data['team_id'] == team1['team_id']]
+    team_info2 = team_data[team_data['team_id'] == team2['team_id']]
+
+    team_1_stats_json = {
+        "abbreviation": team_info1["abbreviation"],
+        "city": team_info1["shortName"],
+        "name": team_info1["teamName"],
+        "home or away" : team1["HoA"],
+        "won" : team1["won"],
+        "settled in": team1["settled_in"],
+        "goals": team1["goals"],
+        "shots": team1["shots"],
+        "hits": team1["hits"],
+        "penalty minutes": team1["pim"],
+        "power play opportunities": team1["powerPlayOpportunities"],
+        "power play goals": team1["powerPlayGoals"],
+        "face off win percentage": team1["faceOffWinPercentage"],
+        "give aways": team1["giveaways"],
+        "take aways": team1["takeaways"]
+    }
+    team_2_stats_json = {
+        "abbreviation": team_info2["abbreviation"],
+        "city": team_info2["shortName"],
+        "name": team_info2["teamName"],
+        "home or away" : team2["HoA"],
+        "won" : team2["won"],
+        "settled in": team2["settled_in"],
+        "goals": team2["goals"],
+        "shots": team2["shots"],
+        "hits": team2["hits"],
+        "penalty minutes": team2["pim"],
+        "power play opportunities": team2["powerPlayOpportunities"],
+        "power play goals": team2["powerPlayGoals"],
+        "face off win percentage": team2["faceOffWinPercentage"],
+        "give aways": team2["giveaways"],
+        "take aways": team2["takeaways"]
+    }
+    teamsJSON = [team_1_stats_json, team_2_stats_json]
+
+    return jsonify(teamsJSON)
+
+# game player stats
+@app.route('/api/results/<int:game_id>/players', methods=['GET'])
+def get_result_players(game_id):
+    
+
 
 # route mapping for HTTP GET on /api/schedule/TOR
 @app.route('/api/teams/<string:team_id>', methods=['GET'])
