@@ -10,8 +10,33 @@ def load_teams_data():
     td = pd.read_csv("./team_info.csv")
     return td
 
+def load_player_info_data():
+    pid = pd.read_csv("./player_info.csv")
+    return pid
+
+def load_game_plays_data():
+    gpd = pd.read_csv("./game_plays.csv")
+    return gpd
+
+def load_game_teams_stat_data():
+    gts = pd.read_csv("./game_teams_stats.csv")    
+    return gts
+
+def load_game_data():
+    gd = pd.read_csv("./game.csv")
+    return gd
+    
 #global variables
 team_data = load_teams_data()
+player_info = load_player_info_data()
+game_plays = load_game_plays_data()
+game_teams_stat = load_game_teams_stat_data()
+game_data = load_game_data()
+print(team_data)
+print(player_info)
+print(game_plays)
+print(game_teams_stat)
+print(game_data)
 print("successfully loaded teams data")
 
 
@@ -24,7 +49,7 @@ def index():
 @app.route('/api/teams/<string:team_id>', methods=['GET'])
 def get_task(team_id):
     # fetch sub dataframe for all teams (hopefully 1) where abbreviation=team_id
-    teams = team_data[team_data["abbreviation"] == team_id]
+    teams = team_data[team_data["abbreviation"] == "team_id"]
 
     # return 404 if there isn't one team
     if teams.shape[0] < 1:
